@@ -43,6 +43,9 @@ class GitAutomation:
             self.repo = Repo(repo_path)
             self.branch_manager = BranchManager(repo_path)
             logger.info(f"Initialized Git automation for: {self.repo_path}")
+
+            self.team_name = os.getenv("TEAM_NAME", "RIFT_ORGANISERS")
+            self.leader_name = os.getenv("LEADER_NAME", "SAIYAM_KUMAR")
             
             # Setup data directory
             self.data_dir = self.repo_path / "data"
@@ -109,11 +112,11 @@ class GitAutomation:
                 logger.warning("No files specified to add")
                 return False
             
-            logger.info("✓ Files staged successfully")
+            logger.info("[OK] Files staged successfully")
             return True
             
         except Exception as e:
-            logger.error(f"✗ Failed to stage files: {e}")
+            logger.error(f"[FAIL] Failed to stage files: {e}")
             return False
     
     def commit(self, message, author_name=None, author_email=None):
@@ -134,6 +137,9 @@ class GitAutomation:
                 logger.warning("No changes to commit")
                 return None
             
+            if not message.startswith("[AI-AGENT]"):
+                message = f"[AI-AGENT] {message}"
+
             logger.info(f"Committing changes: {message[:50]}...")
             
             # Set author if provided
@@ -146,7 +152,7 @@ class GitAutomation:
                 commit = self.repo.index.commit(message)
             
             commit_hash = commit.hexsha[:7]
-            logger.info(f"✓ Commit successful: {commit_hash}")
+            logger.info(f"[OK] Commit successful: {commit_hash}")
             
             # Record commit
             commit_record = {
@@ -162,7 +168,7 @@ class GitAutomation:
             return commit_hash
             
         except Exception as e:
-            logger.error(f"✗ Commit failed: {e}")
+            logger.error(f"[FAIL] Commit failed: {e}")
             return None
     
     def push(self, remote="origin", branch=None, force=False):
@@ -181,6 +187,10 @@ class GitAutomation:
             if branch is None:
                 branch = self.repo.active_branch.name
             
+            if branch in ["main", "master"]:
+                logger.error("[FAIL] Push blocked: refusing to push directly to main/master")
+                return False
+
             logger.info(f"Pushing to {remote}/{branch}...")
             
             if force:
@@ -189,7 +199,7 @@ class GitAutomation:
             else:
                 self.repo.remotes[remote].push(branch)
             
-            logger.info(f"✓ Push successful to {remote}/{branch}")
+            logger.info(f"[OK] Push successful to {remote}/{branch}")
             
             # Record push
             push_record = {
@@ -206,11 +216,38 @@ class GitAutomation:
             return True
             
         except GitCommandError as e:
-            logger.error(f"✗ Push failed: {e}")
+            logger.error(f"[FAIL] Push failed: {e}")
             return False
         except Exception as e:
-            logger.error(f"✗ Unexpected error during push: {e}")
+            logger.error(f"[FAIL] Unexpected error during push: {e}")
             return False
+
+    def ensure_ai_fix_branch(self, team_name=None, leader_name=None, base_branch=None):
+        """Ensure we are on TEAM_NAME_LEADER_NAME_AI_Fix branch"""
+        if base_branch is None:
+            base_branch = os.getenv("DEFAULT_BRANCH", "main")
+        team_name = team_name or self.team_name
+        leader_name = leader_name or self.leader_name
+
+        target_branch = self.branch_manager.generate_branch_name(
+            team_name=team_name,
+            leader_name=leader_name
+        )
+
+        current_branch = self.repo.active_branch.name
+        if current_branch == target_branch:
+            return target_branch
+
+        created = self.branch_manager.create_branch(
+            target_branch,
+            base_branch=base_branch,
+            checkout=True
+        )
+
+        if not created:
+            raise RuntimeError("Failed to create or checkout AI fix branch")
+
+        return target_branch
     
     def automated_commit_push(self, message, add_all=True, remote="origin"):
         """
@@ -233,6 +270,13 @@ class GitAutomation:
             "timestamp": datetime.now().isoformat()
         }
         
+        # Step 0: Ensure AI fix branch
+        try:
+            self.ensure_ai_fix_branch()
+        except Exception as e:
+            logger.error(f"[FAIL] {e}")
+            return results
+
         # Step 1: Add files
         if self.add_files(add_all=add_all):
             results["add"] = True
@@ -274,21 +318,22 @@ class GitAutomation:
             
             logger.info(f"Pulling from {remote}/{branch}...")
             self.repo.remotes[remote].pull(branch)
-            logger.info("✓ Pull successful")
+            logger.info("[OK] Pull successful")
             return True
             
         except Exception as e:
-            logger.error(f"✗ Pull failed: {e}")
+            logger.error(f"[FAIL] Pull failed: {e}")
             return False
     
-    def create_ai_branch_and_commit(self, issue_type, description, commit_message):
+    def create_ai_branch_and_commit(self, description, commit_message, team_name=None, leader_name=None):
         """
-        Create TEAM_LEADER_AI_Fix branch, commit, and push
+        Create TEAM_NAME_LEADER_NAME_AI_Fix branch, commit, and push
         
         Args:
-            issue_type (str): Type of issue (bug, feature, etc.)
             description (str): Branch description
             commit_message (str): Commit message
+            team_name (str, optional): Team name
+            leader_name (str, optional): Team leader name
             
         Returns:
             dict: Results of operation
@@ -297,8 +342,8 @@ class GitAutomation:
         
         # Create branch
         branch_name = self.branch_manager.create_ai_fix_branch(
-            issue_type=issue_type,
-            description=description
+            team_name=team_name,
+            leader_name=leader_name
         )
         
         if not branch_name:
@@ -360,9 +405,9 @@ def main():
             )
             
             logger.info("\n=== Results ===")
-            logger.info(f"  Add: {'✓' if results['add'] else '✗'}")
-            logger.info(f"  Commit: {results['commit'] or '✗'}")
-            logger.info(f"  Push: {'✓' if results['push'] else '✗'}")
+            logger.info(f"  Add: {'[OK]' if results['add'] else '[FAIL]'}")
+            logger.info(f"  Commit: {results['commit'] or '[FAIL]'}")
+            logger.info(f"  Push: {'[OK]' if results['push'] else '[FAIL]'}")
         else:
             logger.info("Repository is clean, no changes to commit")
         

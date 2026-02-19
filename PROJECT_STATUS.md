@@ -10,7 +10,7 @@
 
 ### 1. Working Git Automation ✅
 - [x] Repository cloning script (`scripts/repo_clone.py`)
-- [x] Branch naming function: TEAM_LEADER_AI_Fix (`scripts/branch_manager.py`)
+- [x] Branch naming function: TEAM_NAME_LEADER_NAME_AI_Fix (`scripts/branch_manager.py`)
 - [x] GitPython commit + push flow (`scripts/git_automation.py`)
 - [x] Automated Git workflows
 - [x] Branch history tracking
@@ -42,7 +42,7 @@
 | Task | Status | File |
 |------|--------|------|
 | Repo cloning script | ✅ | `scripts/repo_clone.py` |
-| Branch naming: TEAM_LEADER_AI_Fix | ✅ | `scripts/branch_manager.py` |
+| Branch naming: TEAM_NAME_LEADER_NAME_AI_Fix | ✅ | `scripts/branch_manager.py` |
 | GitPython commit + push | ✅ | `scripts/git_automation.py` |
 
 ### Phase 2: Next 4 Hours ✅
@@ -120,7 +120,7 @@ RIFT'26/
 
 ### 1. Git Automation
 - **Repository Cloning**: Automated multi-repo cloning with history tracking
-- **Branch Naming**: `TEAM_LEADER_AI_Fix/<type>/<timestamp>[/issue_<id>][/description]`
+- **Branch Naming**: `TEAM_NAME_LEADER_NAME_AI_Fix`
 - **Commit Flow**: Automated add → commit → push workflow
 - **History Tracking**: JSON-based operation history
 

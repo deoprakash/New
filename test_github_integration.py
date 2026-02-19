@@ -4,6 +4,7 @@ Tests Git automation with actual GitHub repository
 """
 
 import sys
+import os
 from pathlib import Path
 import subprocess
 import json
@@ -53,6 +54,30 @@ def get_current_branch():
     except Exception:
         return None
 
+def get_team_info():
+    """Get team and leader names for branch naming"""
+    team_name = os.getenv("TEAM_NAME", "RIFT_ORGANISERS")
+    leader_name = os.getenv("LEADER_NAME", "SAIYAM_KUMAR")
+    return team_name, leader_name
+
+def ensure_ai_fix_branch(team_name, leader_name):
+    """Ensure we are on TEAM_NAME_LEADER_NAME_AI_Fix branch"""
+    from branch_manager import BranchManager
+    manager = BranchManager(team_name=team_name, leader_name=leader_name)
+    branch_name = manager.generate_branch_name(team_name, leader_name)
+
+    result = subprocess.run(
+        ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{branch_name}"],
+        timeout=5
+    )
+    if result.returncode == 0:
+        subprocess.run(["git", "checkout", branch_name], check=False)
+    else:
+        subprocess.run(["git", "checkout", "main"], check=False)
+        subprocess.run(["git", "checkout", "-b", branch_name], check=False)
+
+    return branch_name
+
 def test_github_integration():
     """Test complete GitHub integration workflow"""
     
@@ -96,11 +121,14 @@ def test_github_integration():
         print("  [WARNING] Could not detect branch")
         current_branch = "main"
     
-    # Step 4: Create TEAM_LEADER_AI_Fix Branches
-    print("\n[STEP 4] Creating TEAM_LEADER_AI_Fix branches...")
+    # Step 4: Create TEAM_NAME_LEADER_NAME_AI_Fix Branches
+    print("\n[STEP 4] Creating TEAM_NAME_LEADER_NAME_AI_Fix branches...")
     from branch_manager import BranchManager
     
-    manager = BranchManager()
+    team_name, leader_name = get_team_info()
+    manager = BranchManager(team_name=team_name, leader_name=leader_name)
+    target_branch = ensure_ai_fix_branch(team_name, leader_name)
+    print(f"  [OK] Using branch: {target_branch}")
     test_branches = [
         ("bug", "201", "github_integration_test"),
         ("feature", "202", "test_automation"),
@@ -108,7 +136,13 @@ def test_github_integration():
     
     created = []
     for branch_type, issue_id, description in test_branches:
-        branch = manager.create_branch_entry(branch_type, issue_id, description)
+        branch = manager.create_branch_entry(
+            issue_type=branch_type,
+            issue_id=issue_id,
+            description=description,
+            team_name=team_name,
+            leader_name=leader_name
+        )
         created.append(branch)
         print(f"  [OK] Created: {branch['branch_name']}")
     
@@ -171,14 +205,14 @@ def test_github_integration():
     # Step 8: Push to GitHub
     if can_push and commit_created:
         print("\n[STEP 8] Pushing to GitHub...")
-        print(f"  [ACTION] About to push to remote/{current_branch}")
+        print(f"  [ACTION] About to push to remote/{target_branch}")
         print("  [INFO] This will push to your GitHub repository!")
         
         response = input("\n  Do you want to push? (yes/no): ").lower()
         
         if response in ['yes', 'y']:
             result = subprocess.run(
-                ["git", "push", "origin", current_branch],
+                ["git", "push", "origin", target_branch],
                 capture_output=True,
                 text=True
             )

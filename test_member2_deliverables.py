@@ -5,10 +5,23 @@ Ensures all systems are working before hackathon demo.
 import sys
 from pathlib import Path
 import json
+import os
 
 # Add project to path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root / "scripts"))
+
+def _normalize_name(value):
+    if value is None:
+        return ""
+    cleaned = value.strip().replace(" ", "_")
+    cleaned = "".join(ch for ch in cleaned if ch.isalnum() or ch == "_")
+    return cleaned.upper()
+
+def get_expected_branch_name():
+    team_name = _normalize_name(os.getenv("TEAM_NAME", "RIFT_ORGANISERS"))
+    leader_name = _normalize_name(os.getenv("LEADER_NAME", "SAIYAM_KUMAR"))
+    return f"{team_name}_{leader_name}_AI_Fix"
 
 def test_deliverable_1():
     """Test: Working Git Automation"""
@@ -19,8 +32,10 @@ def test_deliverable_1():
     from branch_manager import BranchManager
     
     # Test branch manager
-    print("\n[TEST] Creating branches with TEAM_LEADER_AI_Fix naming...")
-    manager = BranchManager()
+    print("\n[TEST] Creating branches with TEAM_NAME_LEADER_NAME_AI_Fix naming...")
+    team_name = os.getenv("TEAM_NAME", "RIFT_ORGANISERS")
+    leader_name = os.getenv("LEADER_NAME", "SAIYAM_KUMAR")
+    manager = BranchManager(team_name=team_name, leader_name=leader_name)
     
     # Create branches
     branch_configs = [
@@ -32,7 +47,13 @@ def test_deliverable_1():
     
     created_branches = []
     for branch_type, issue_id, description in branch_configs:
-        branch = manager.create_branch_entry(branch_type, issue_id, description)
+        branch = manager.create_branch_entry(
+            issue_type=branch_type,
+            issue_id=issue_id,
+            description=description,
+            team_name=team_name,
+            leader_name=leader_name
+        )
         created_branches.append(branch)
         print(f"  [OK] {branch['branch_name']}")
     
@@ -50,17 +71,18 @@ def test_deliverable_1():
     print(f"  [CHECK] File size: {history_file.stat().st_size} bytes")
     
     # Verify naming convention
+    expected_branch = get_expected_branch_name()
     all_correct = all(
-        branch['branch_name'].startswith("TEAM_LEADER_AI_Fix/")
+        branch['branch_name'] == expected_branch
         for branch in history
     )
     
     success = len(history) >= 4 and all_correct
     
     if success:
-        print("\n  [PASS] Deliverable 1: Working Git Automation ✓")
+        print("\n  [PASS] Deliverable 1: Working Git Automation [OK]")
     else:
-        print("\n  [FAIL] Deliverable 1: Issues detected ✗")
+        print("\n  [FAIL] Deliverable 1: Issues detected [FAIL]")
     
     return success
 
@@ -111,7 +133,7 @@ def test_deliverable_2():
     success = files_exist[0] and files_with_data[0] and existing_files >= 4
     
     if success:
-        print("\n  [PASS] Deliverable 2: CI/CD Timeline Data ✓")
+        print("\n  [PASS] Deliverable 2: CI/CD Timeline Data [OK]")
     else:
         print("\n  [WARN] Deliverable 2: Some files need data (Docker required for full CI/CD)")
     
@@ -119,7 +141,7 @@ def test_deliverable_2():
 
 
 def test_branch_naming_convention():
-    """Test: TEAM_LEADER_AI_Fix naming convention"""
+    """Test: TEAM_NAME_LEADER_NAME_AI_Fix naming convention"""
     print("\n" + "="*70)
     print("  BONUS: Branch Naming Convention Test")
     print("="*70)
@@ -141,7 +163,8 @@ def test_branch_naming_convention():
     all_valid = True
     for idx, branch in enumerate(history, 1):
         name = branch['branch_name']
-        valid = name.startswith("TEAM_LEADER_AI_Fix/")
+        expected_branch = get_expected_branch_name()
+        valid = name == expected_branch
         status = "[OK]" if valid else "[FAIL]"
         
         # Show first and last branch
@@ -153,9 +176,9 @@ def test_branch_naming_convention():
         all_valid = all_valid and valid
     
     if all_valid:
-        print("\n  [PASS] All branches follow TEAM_LEADER_AI_Fix convention ✓")
+        print("\n  [PASS] All branches follow TEAM_NAME_LEADER_NAME_AI_Fix convention [OK]")
     else:
-        print("\n  [FAIL] Some branches don't follow convention ✗")
+        print("\n  [FAIL] Some branches don't follow convention [FAIL]")
     
     return all_valid
 
@@ -194,7 +217,7 @@ def main():
     print(f"\n  Results: {passed}/{total} tests passed")
     
     if passed >= 2:  # At least core deliverables work
-        print("\n  [SUCCESS] Member 2 deliverables ready for hackathon! 🚀")
+        print("\n  [SUCCESS] Member 2 deliverables ready for hackathon! [OK]")
         print("\n  Note: Run with Docker Desktop for full CI/CD pipeline data")
         return 0
     else:

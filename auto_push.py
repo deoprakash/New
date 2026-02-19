@@ -5,6 +5,7 @@ Pushes all changes to GitHub automatically
 
 import subprocess
 import sys
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -59,6 +60,49 @@ def get_current_branch():
     if result.returncode == 0:
         return result.stdout.strip() or "main"
     return "main"
+
+def _normalize_name(value):
+    """Normalize names to UPPERCASE with underscores only"""
+    if value is None:
+        return ""
+    cleaned = value.strip().replace(" ", "_")
+    cleaned = "".join(ch for ch in cleaned if ch.isalnum() or ch == "_")
+    return cleaned.upper()
+
+def get_ai_fix_branch_name():
+    """Build TEAM_NAME_LEADER_NAME_AI_Fix branch name"""
+    team_name = _normalize_name(os.getenv("TEAM_NAME", "RIFT_ORGANISERS"))
+    leader_name = _normalize_name(os.getenv("LEADER_NAME", "SAIYAM_KUMAR"))
+    return f"{team_name}_{leader_name}_AI_Fix"
+
+def ensure_ai_fix_branch(base_branch="main"):
+    """Create or checkout the AI fix branch, never using main/master"""
+    target_branch = get_ai_fix_branch_name()
+    current_branch = get_current_branch()
+
+    if current_branch in ["main", "master"]:
+        # Check if target exists
+        check = subprocess.run(
+            ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{target_branch}"],
+            timeout=5
+        )
+        if check.returncode == 0:
+            run_command(["git", "checkout", target_branch], f"Checking out {target_branch}")
+        else:
+            run_command(["git", "checkout", base_branch], f"Checking out {base_branch}")
+            run_command(["git", "checkout", "-b", target_branch], f"Creating {target_branch}")
+    elif current_branch != target_branch:
+        check = subprocess.run(
+            ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{target_branch}"],
+            timeout=5
+        )
+        if check.returncode == 0:
+            run_command(["git", "checkout", target_branch], f"Checking out {target_branch}")
+        else:
+            run_command(["git", "checkout", base_branch], f"Checking out {base_branch}")
+            run_command(["git", "checkout", "-b", target_branch], f"Creating {target_branch}")
+
+    return target_branch
 
 def check_changes():
     """Check if there are changes to commit"""
@@ -157,7 +201,10 @@ def main(auto_confirm=False):
     if remote_url:
         print(f"\n[INFO] Remote URL: {remote_url}")
     
-    # Step 3: Check for changes
+    # Step 3: Ensure AI fix branch
+    target_branch = ensure_ai_fix_branch(base_branch=os.getenv("DEFAULT_BRANCH", "main"))
+
+    # Step 4: Check for changes
     has_changes = check_changes()
     
     if not has_changes:
@@ -174,22 +221,22 @@ def main(auto_confirm=False):
         
         return 0
     
-    # Step 4: Stage changes
+    # Step 5: Stage changes
     if not stage_all_changes():
         return 1
     
-    # Step 5: Create commit
+    # Step 6: Create commit
     commit_success = create_commit()
     
     if not commit_success:
         # Try to push existing commits
         print("\n[INFO] No new commit, but checking if there are unpushed commits...")
     
-    # Step 6: Get current branch
-    branch = get_current_branch()
-    print(f"\n[INFO] Current branch: {branch}")
+    # Step 7: Use target branch
+    branch = target_branch
+    print(f"\n[INFO] Target branch: {branch}")
     
-    # Step 7: Confirm push (unless auto_confirm is True)
+    # Step 8: Confirm push (unless auto_confirm is True)
     if not auto_confirm:
         print("\n" + "="*70)
         print(f"  READY TO PUSH TO: {remote_url}")
@@ -204,8 +251,12 @@ def main(auto_confirm=False):
             print("[INFO] Run again to push, or use: git push origin main")
             return 0
     
-    # Step 8: Push to GitHub
+    # Step 9: Push to GitHub
     print("\n" + "="*70)
+    if branch in ["main", "master"]:
+        print("\n[FAILED] Push blocked: refusing to push to main/master")
+        return 1
+
     if push_to_github(branch):
         print("\n[SUCCESS] All changes pushed to GitHub!")
         print(f"[INFO] View at: {remote_url.replace('.git', '')}")

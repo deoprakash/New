@@ -11,7 +11,7 @@ python test_github_integration.py
 This will:
 - ✅ Check if git is initialized
 - ✅ Verify remote configuration
-- ✅ Create TEAM_LEADER_AI_Fix branches
+- ✅ Create TEAM_NAME_LEADER_NAME_AI_Fix branches
 - ✅ Stage and commit changes
 - ✅ Push to GitHub (with your confirmation)
 
@@ -118,7 +118,7 @@ Then:
 python test_github_integration.py
 
 # It will:
-# 1. Create TEAM_LEADER_AI_Fix branches
+# 1. Create TEAM_NAME_LEADER_NAME_AI_Fix branches
 # 2. Update data files
 # 3. Commit changes
 # 4. Ask if you want to push
@@ -197,7 +197,7 @@ git push origin main
 # Open browser: https://github.com/YOUR_USERNAME/RIFT26/commits
 ```
 
-### Show TEAM_LEADER_AI_Fix Branches:
+### Show TEAM_NAME_LEADER_NAME_AI_Fix Branches:
 
 ```bash
 # View branch history

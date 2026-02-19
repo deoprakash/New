@@ -104,7 +104,7 @@ RIFT'26/
 │
 ├── scripts/                # Git automation scripts
 │   ├── repo_clone.py       # Repository cloning
-│   ├── branch_manager.py   # Branch naming (TEAM_LEADER_AI_Fix)
+│   ├── branch_manager.py   # Branch naming (TEAM_NAME_LEADER_NAME_AI_Fix)
 │   └── git_automation.py   # Commit + push automation
 │
 ├── ci_cd/                  # CI/CD pipeline
@@ -134,7 +134,7 @@ RIFT'26/
 
 ### Phase 1: First 4 Hours - Git Automation
 - ✓ Repo cloning script
-- ✓ Branch naming: TEAM_LEADER_AI_Fix
+- ✓ Branch naming: TEAM_NAME_LEADER_NAME_AI_Fix
 - ✓ GitPython commit + push flow
 
 ### Phase 2: Next 4 Hours - CI/CD Pipeline

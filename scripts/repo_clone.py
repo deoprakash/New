@@ -5,6 +5,7 @@ Automates the cloning of repositories for CI/CD pipeline
 
 import os
 import sys
+import argparse
 from git import Repo, GitCommandError
 from pathlib import Path
 import logging
@@ -83,11 +84,11 @@ class RepoCloner:
             }
             self.clone_history.append(clone_record)
             
-            logger.info(f"✓ Successfully cloned {repo_name}")
+            logger.info(f"[OK] Successfully cloned {repo_name}")
             return repo
             
         except GitCommandError as e:
-            logger.error(f"✗ Git command failed: {e}")
+            logger.error(f"[FAIL] Git command failed: {e}")
             clone_record = {
                 "timestamp": datetime.now().isoformat(),
                 "repo_url": repo_url,
@@ -98,7 +99,7 @@ class RepoCloner:
             raise
             
         except Exception as e:
-            logger.error(f"✗ Unexpected error during cloning: {e}")
+            logger.error(f"[FAIL] Unexpected error during cloning: {e}")
             raise
     
     def clone_multiple(self, repo_list):
@@ -161,29 +162,35 @@ class RepoCloner:
 
 def main():
     """Main execution function"""
+    parser = argparse.ArgumentParser(description="Clone a GitHub repository")
+    parser.add_argument("--url", help="GitHub repository URL")
+    parser.add_argument("--branch", help="Branch to clone", default=None)
+    parser.add_argument("--depth", help="Shallow clone depth", type=int, default=None)
+    parser.add_argument("--base-dir", help="Base directory for clones", default="./repos")
+    args = parser.parse_args()
+
     logger.info("=== Repository Cloning Script ===")
-    
+
+    repo_url = args.url
+    if not repo_url:
+        repo_url = input("Enter GitHub repository URL to clone: ").strip()
+
+    if not repo_url:
+        logger.error("[FAIL] No repository URL provided")
+        return
+
     # Initialize cloner
-    cloner = RepoCloner()
-    
-    # Example: Clone demo repositories
-    demo_repos = [
-        {
-            "url": "https://github.com/pallets/flask.git",
-            "branch": "main",
-            "depth": 1
-        }
-    ]
-    
-    # Clone repositories
-    results = cloner.clone_multiple(demo_repos)
-    
-    # Display results
-    logger.info("\n=== Clone Results ===")
-    for result in results:
-        status_icon = "✓" if result["status"] == "success" else "✗"
-        logger.info(f"{status_icon} {result['repo']}: {result['status']}")
-    
+    cloner = RepoCloner(base_dir=args.base_dir)
+
+    # Clone single repository
+    try:
+        cloner.clone_repository(repo_url, branch=args.branch, depth=args.depth)
+        logger.info("\n=== Clone Results ===")
+        logger.info(f"[OK] {repo_url}: success")
+    except Exception as e:
+        logger.info("\n=== Clone Results ===")
+        logger.error(f"[FAIL] {repo_url}: {e}")
+
     # Save history
     cloner.save_clone_history()
     

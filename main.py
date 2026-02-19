@@ -4,6 +4,7 @@ Orchestrates the complete DevOps workflow
 """
 
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 import logging
@@ -40,6 +41,13 @@ def banner(text):
     print("="*70 + "\n")
 
 
+def get_team_info():
+    """Get team and leader names for branch naming"""
+    team_name = os.getenv("TEAM_NAME", "RIFT_ORGANISERS")
+    leader_name = os.getenv("LEADER_NAME", "SAIYAM_KUMAR")
+    return team_name, leader_name
+
+
 def run_git_automation_demo():
     """Run Git automation demonstration"""
     banner("Phase 1: Git Automation (First 4 Hours)")
@@ -51,7 +59,8 @@ def run_git_automation_demo():
         manager = BranchManager()
         
         # Generate and SAVE example branches
-        logger.info("\nGenerating TEAM_LEADER_AI_Fix branches:")
+        team_name, leader_name = get_team_info()
+        logger.info("\nGenerating TEAM_NAME_LEADER_NAME_AI_Fix branches:")
         examples = [
             ("bug", "101", "fix_authentication"),
             ("feature", "102", "add_analytics"),
@@ -61,7 +70,13 @@ def run_git_automation_demo():
         
         created_branches = []
         for issue_type, issue_id, description in examples:
-            branch_entry = manager.create_branch_entry(issue_type, issue_id, description)
+            branch_entry = manager.create_branch_entry(
+                issue_type=issue_type,
+                issue_id=issue_id,
+                description=description,
+                team_name=team_name,
+                leader_name=leader_name
+            )
             created_branches.append(branch_entry)
             print(f"  [OK] {branch_entry['branch_name']}")
         
@@ -98,11 +113,11 @@ def run_ci_pipeline_demo():
         tracker.print_summary()
         tracker.save_report()
         
-        logger.info("\n✓ CI/CD pipeline demonstration complete!")
+        logger.info("\n[OK] CI/CD pipeline demonstration complete!")
         return True
         
     except Exception as e:
-        logger.error(f"✗ CI pipeline failed: {e}")
+        logger.error(f"[FAIL] CI pipeline failed: {e}")
         return False
 
 
@@ -145,7 +160,7 @@ def print_final_summary():
     print("✓ Deliverables Completed:\n")
     print("  1. Working Git Automation")
     print("     - Repo cloning script")
-    print("     - Branch naming: TEAM_LEADER_AI_Fix")
+    print("     - Branch naming: TEAM_NAME_LEADER_NAME_AI_Fix")
     print("     - GitPython commit + push flow")
     print()
     print("  2. CI/CD Pipeline")
@@ -194,17 +209,17 @@ def main():
     # Print results
     banner("Execution Results")
     for phase, success in results:
-        status = "✓ PASSED" if success else "✗ FAILED"
+        status = "[OK] PASSED" if success else "[FAIL] FAILED"
         print(f"  {status}: {phase}")
     print()
     
     # Overall status
     all_passed = all(result[1] for result in results)
     if all_passed:
-        logger.info("🎉 All phases completed successfully!")
+        logger.info("[OK] All phases completed successfully!")
         return 0
     else:
-        logger.error("⚠ Some phases failed. Check logs for details.")
+        logger.error("[WARN] Some phases failed. Check logs for details.")
         return 1
 
 
