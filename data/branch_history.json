@@ -1,71 +1,71 @@
 [
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/bug/20260219_154320/issue_101/auth_token_expiration",
+    "branch_name": "DEO_PRAKASH_AI/bug/20260219_154613/issue_101/auth_token_expiration",
     "type": "bug",
-    "timestamp": "2026-02-19T15:43:20.540179",
+    "timestamp": "2026-02-19T15:46:13.874134",
     "issue_id": "101",
     "description": "auth_token_expiration",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/feature/20260219_154320/issue_102/user_dashboard_redesign",
+    "branch_name": "DEO_PRAKASH_AI/feature/20260219_154613/issue_102/user_dashboard_redesign",
     "type": "feature",
-    "timestamp": "2026-02-19T15:43:20.540179",
+    "timestamp": "2026-02-19T15:46:13.884967",
     "issue_id": "102",
     "description": "user_dashboard_redesign",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/hotfix/20260219_154320/issue_103/critical_memory_leak",
+    "branch_name": "DEO_PRAKASH_AI/hotfix/20260219_154613/issue_103/critical_memory_leak",
     "type": "hotfix",
-    "timestamp": "2026-02-19T15:43:20.574401",
+    "timestamp": "2026-02-19T15:46:13.912210",
     "issue_id": "103",
     "description": "critical_memory_leak",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/fix/20260219_154320/issue_104/api_response_timeout",
+    "branch_name": "DEO_PRAKASH_AI/fix/20260219_154613/issue_104/api_response_timeout",
     "type": "fix",
-    "timestamp": "2026-02-19T15:43:20.595901",
+    "timestamp": "2026-02-19T15:46:13.931706",
     "issue_id": "104",
     "description": "api_response_timeout",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/feature/20260219_154320/issue_105/multi_language_support",
+    "branch_name": "DEO_PRAKASH_AI/feature/20260219_154613/issue_105/multi_language_support",
     "type": "feature",
-    "timestamp": "2026-02-19T15:43:20.611653",
+    "timestamp": "2026-02-19T15:46:13.951166",
     "issue_id": "105",
     "description": "multi_language_support",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/bug/20260219_154320/issue_106/payment_validation_error",
+    "branch_name": "DEO_PRAKASH_AI/bug/20260219_154613/issue_106/payment_validation_error",
     "type": "bug",
-    "timestamp": "2026-02-19T15:43:20.634021",
+    "timestamp": "2026-02-19T15:46:13.974125",
     "issue_id": "106",
     "description": "payment_validation_error",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/hotfix/20260219_154320/issue_107/database_connection_pool",
+    "branch_name": "DEO_PRAKASH_AI/hotfix/20260219_154613/issue_107/database_connection_pool",
     "type": "hotfix",
-    "timestamp": "2026-02-19T15:43:20.659617",
+    "timestamp": "2026-02-19T15:46:13.993215",
     "issue_id": "107",
     "description": "database_connection_pool",
     "created_by": "DevOps_Lead",
     "status": "created"
   },
   {
-    "branch_name": "DEO_PRAKASH_AI_Fix/feature/20260219_154320/issue_108/real_time_notifications",
+    "branch_name": "DEO_PRAKASH_AI/feature/20260219_154614/issue_108/real_time_notifications",
     "type": "feature",
-    "timestamp": "2026-02-19T15:43:20.684251",
+    "timestamp": "2026-02-19T15:46:14.009900",
     "issue_id": "108",
     "description": "real_time_notifications",
     "created_by": "DevOps_Lead",
