@@ -42,7 +42,7 @@ def test_pipeline_timeline():
         print(f"[VERIFY] Pipeline history entries: {history_count}")
         
         if history_count > 0:
-            print("\n[SUCCESS] Pipeline timeline data generated! ✓")
+            print("\n[SUCCESS] Pipeline timeline data generated! [OK]")
             
             # Show sample
             print("\n[SAMPLE] First pipeline run:")

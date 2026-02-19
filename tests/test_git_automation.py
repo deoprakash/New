@@ -18,46 +18,34 @@ class TestBranchManager:
     def test_generate_branch_name_basic(self):
         """Test basic branch name generation"""
         manager = BranchManager()
-        branch_name = manager.generate_branch_name("fix")
+        branch_name = manager.generate_branch_name("Code Warriors", "John Doe")
         
-        assert "TEAM_LEADER_AI_Fix/fix" in branch_name
-        assert len(branch_name) > 0
+        assert branch_name == "CODE_WARRIORS_JOHN_DOE_AI_Fix"
     
     def test_generate_branch_name_with_issue(self):
-        """Test branch name with issue ID"""
+        """Test branch name with team and leader names"""
         manager = BranchManager()
-        branch_name = manager.generate_branch_name("bug", issue_id="123")
+        branch_name = manager.generate_branch_name("RIFT ORGANISERS", "Saiyam Kumar")
         
-        assert "TEAM_LEADER_AI_Fix/bug" in branch_name
-        assert "issue_123" in branch_name
+        assert branch_name == "RIFT_ORGANISERS_SAIYAM_KUMAR_AI_Fix"
     
     def test_generate_branch_name_with_description(self):
-        """Test branch name with description"""
+        """Test branch name with extra spaces"""
         manager = BranchManager()
-        branch_name = manager.generate_branch_name(
-            "feature",
-            description="Add new dashboard"
-        )
+        branch_name = manager.generate_branch_name("  Team One ", " Leader One ")
         
-        assert "TEAM_LEADER_AI_Fix/feature" in branch_name
-        assert "add_new_dashboard" in branch_name
+        assert branch_name == "TEAM_ONE_LEADER_ONE_AI_Fix"
     
     def test_generate_branch_name_full(self):
-        """Test branch name with all parameters"""
+        """Test branch name with special characters"""
         manager = BranchManager()
-        branch_name = manager.generate_branch_name(
-            "hotfix",
-            issue_id="456",
-            description="Critical security patch"
-        )
+        branch_name = manager.generate_branch_name("RIFT@2026", "John-Doe")
         
-        assert "TEAM_LEADER_AI_Fix/hotfix" in branch_name
-        assert "issue_456" in branch_name
-        assert "critical" in branch_name
+        assert branch_name == "RIFT2026_JOHNDOE_AI_Fix"
     
     def test_branch_prefix_constant(self):
-        """Test branch prefix constant"""
-        assert BranchManager.BRANCH_PREFIX == "TEAM_LEADER_AI_Fix"
+        """Test branch suffix constant"""
+        assert BranchManager.BRANCH_SUFFIX == "AI_Fix"
 
 
 class TestGitAutomation:
@@ -91,20 +79,19 @@ def test_project_structure():
 
 
 def test_branch_naming_convention():
-    """Test branch naming follows TEAM_LEADER_AI_Fix convention"""
+    """Test branch naming follows TEAM_NAME_LEADER_NAME_AI_Fix convention"""
     manager = BranchManager()
-    
+
     test_cases = [
-        ("bug", None, None),
-        ("feature", "789", None),
-        ("fix", None, "improve performance"),
-        ("hotfix", "111", "emergency fix")
+        ("RIFT ORGANISERS", "Saiyam Kumar", "RIFT_ORGANISERS_SAIYAM_KUMAR_AI_Fix"),
+        ("Code Warriors", "John Doe", "CODE_WARRIORS_JOHN_DOE_AI_Fix"),
+        ("Team One", "Leader One", "TEAM_ONE_LEADER_ONE_AI_Fix"),
     ]
     
-    for issue_type, issue_id, description in test_cases:
-        branch_name = manager.generate_branch_name(issue_type, issue_id, description)
-        assert branch_name.startswith("TEAM_LEADER_AI_Fix/")
-        print(f"✓ Generated: {branch_name}")
+    for team_name, leader_name, expected in test_cases:
+        branch_name = manager.generate_branch_name(team_name, leader_name)
+        assert branch_name == expected
+        print(f"[OK] Generated: {branch_name}")
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ def main():
     if not venv_path.exists():
         print("Creating virtual environment...")
         subprocess.run([sys.executable, "-m", "venv", "venv"])
-        print("✓ Virtual environment created\n")
+        print("[OK] Virtual environment created\n")
     
     # Determine pip path
     if sys.platform == "win32":
@@ -31,7 +31,7 @@ def main():
     # Install dependencies
     print("Installing dependencies...")
     subprocess.run([str(pip_path), "install", "-r", "requirements.txt", "-q"])
-    print("✓ Dependencies installed\n")
+    print("[OK] Dependencies installed\n")
     
     # Run main script
     print("Running main workflow...\n")

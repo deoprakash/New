@@ -9,6 +9,10 @@ Create a `.env` file in the project root with the following variables:
 GIT_USER_NAME=DevOps Lead
 GIT_USER_EMAIL=devops@rift26.com
 
+# Team Branding (Branch Naming)
+TEAM_NAME=RIFT ORGANISERS
+LEADER_NAME=Saiyam Kumar
+
 # Repository Settings
 DEFAULT_BRANCH=main
 REMOTE_NAME=origin
@@ -64,9 +68,11 @@ See `docker-compose.yml` for service configuration
 ## Project Settings
 
 ### Branch Naming Convention
-- Format: `DEO_PRAKASH_AI_Fix/<type>/<timestamp>[/issue_<id>][/description]`
-- Types: bug, feature, hotfix, fix
-- Example: `DEO_PRAKASH_AI_Fix/bug/20260219_143022/issue_123/login_fix`
+- Format: `TEAM_NAME_LEADER_NAME_AI_Fix`
+- All UPPERCASE
+- Spaces replaced with underscores
+- Only underscores allowed as special characters
+- Example: `RIFT_ORGANISERS_SAIYAM_KUMAR_AI_Fix`
 
 ### Commit Message Convention
 - Format: `[<type>] <message>`

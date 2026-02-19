@@ -4,6 +4,7 @@ Generates fresh data and tests complete workflow
 """
 
 import sys
+import os
 import json
 import subprocess
 from pathlib import Path
@@ -27,6 +28,13 @@ def print_step(step_num, title, status=""):
         print(f"\n[Step {step_num}] {title} ... [SKIP]")
     else:
         print(f"\n[Step {step_num}] {title}")
+
+
+def get_team_info():
+    """Get team and leader names for branch naming"""
+    team_name = os.getenv("TEAM_NAME", "RIFT_ORGANISERS")
+    leader_name = os.getenv("LEADER_NAME", "SAIYAM_KUMAR")
+    return team_name, leader_name
 
 
 def clean_data_files():
@@ -58,7 +66,8 @@ def generate_branch_data(count=8):
     try:
         from branch_manager import BranchManager
         
-        branch_mgr = BranchManager()
+        team_name, leader_name = get_team_info()
+        branch_mgr = BranchManager(team_name=team_name, leader_name=leader_name)
         branches = []
         
         # Enhanced branch scenarios for production demo
@@ -77,7 +86,9 @@ def generate_branch_data(count=8):
             branch_data = branch_mgr.create_branch_entry(
                 issue_type=branch_type,
                 issue_id=issue_id,
-                description=description
+                description=description,
+                team_name=team_name,
+                leader_name=leader_name
             )
             branches.append(branch_data)
             print(f"  [{i}/{count}] Created: {branch_data['type']} - {description}")
