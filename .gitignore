@@ -52,7 +52,8 @@ deployment/secrets/
 *.key
 
 # Data
-data/*.json
+# Temporarily allow JSON files for hackathon demo
+# data/*.json
 data/*.csv
 !data/.gitkeep
 

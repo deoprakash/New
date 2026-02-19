@@ -1,0 +1,19 @@
+[
+  {
+    "platform": "railway",
+    "service": "rift26-backend",
+    "timestamp": "2026-02-19T15:28:16.169244",
+    "status": "simulated",
+    "success": true,
+    "message": "Railway CLI not installed - deployment simulated"
+  },
+  {
+    "platform": "aws",
+    "service_type": "lambda",
+    "region": "us-east-1",
+    "timestamp": "2026-02-19T15:28:16.171407",
+    "status": "simulated",
+    "success": true,
+    "message": "AWS CLI not installed - deployment simulated"
+  }
+]

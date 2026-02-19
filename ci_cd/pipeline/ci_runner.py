@@ -90,21 +90,21 @@ class CIRunner:
             }
             
             if test_result["passed"]:
-                logger.info(f"✓ Tests passed in {duration:.2f}s")
+                logger.info(f"[OK] Tests passed in {duration:.2f}s")
             else:
-                logger.error(f"✗ Tests failed (exit code: {result.returncode})")
+                logger.error(f"[FAIL] Tests failed (exit code: {result.returncode})")
             
             return test_result
             
         except subprocess.TimeoutExpired:
-            logger.error("✗ Tests timed out")
+            logger.error("[FAIL] Tests timed out")
             return {
                 "timestamp": datetime.now().isoformat(),
                 "passed": False,
                 "error": "timeout"
             }
         except Exception as e:
-            logger.error(f"✗ Failed to run tests: {e}")
+            logger.error(f"[FAIL] Failed to run tests: {e}")
             return {
                 "timestamp": datetime.now().isoformat(),
                 "passed": False,
@@ -143,14 +143,14 @@ class CIRunner:
             }
             
             if test_result["passed"]:
-                logger.info(f"✓ Docker tests passed in {duration:.2f}s")
+                logger.info(f"[OK] Docker tests passed in {duration:.2f}s")
             else:
-                logger.error(f"✗ Docker tests failed")
+                logger.error(f"[FAIL] Docker tests failed")
             
             return test_result
             
         except Exception as e:
-            logger.error(f"✗ Failed to run Docker tests: {e}")
+            logger.error(f"[FAIL] Failed to run Docker tests: {e}")
             return {
                 "timestamp": datetime.now().isoformat(),
                 "passed": False,
@@ -173,14 +173,14 @@ class CIRunner:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
             
             if result.returncode == 0:
-                logger.info("✓ Docker image built successfully")
+                logger.info("[OK] Docker image built successfully")
                 return True
             else:
-                logger.error(f"✗ Docker build failed: {result.stderr}")
+                logger.error(f"[FAIL] Docker build failed: {result.stderr}")
                 return False
                 
         except Exception as e:
-            logger.error(f"✗ Failed to build Docker image: {e}")
+            logger.error(f"[FAIL] Failed to build Docker image: {e}")
             return False
     
     def simulate_pipeline_run(self):

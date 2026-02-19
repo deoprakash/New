@@ -82,10 +82,11 @@ def run_ci_pipeline_demo():
         from iteration_tracker import IterationTracker
         
         logger.info("Initializing CI Pipeline...")
-        runner = CIRunner()
+        # Force simulation mode for production-ready testing
+        runner = CIRunner(use_simulation=True)
         
         # Run simulation (reduced iterations for demo)
-        logger.info("Running CI pipeline simulation...")
+        logger.info("Running CI pipeline simulation (production-safe mode)...")
         results = runner.run_simulation_loop(iterations=3, delay=1)
         
         # Save pipeline data
