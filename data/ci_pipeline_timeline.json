@@ -1,23 +1,23 @@
 {
   "project": "RIFT'26 - DevOps Lead",
   "start_time": null,
-  "end_time": "2026-02-19T15:28:16.155413",
+  "end_time": "2026-02-19T15:32:15.757168",
   "total_iterations": 5,
   "pipeline_history": [
     {
       "iteration": 1,
-      "start_time": "2026-02-19T15:28:09.090185",
+      "start_time": "2026-02-19T15:32:09.699776",
       "mode": "simulation",
       "stages": {
         "build": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:09.592359",
+          "timestamp": "2026-02-19T15:32:10.201382",
           "duration": 0.5,
           "simulated": true
         },
         "test": {
           "passed": false,
-          "timestamp": "2026-02-19T15:28:09.896220",
+          "timestamp": "2026-02-19T15:32:10.504150",
           "duration": 0.3,
           "tests_run": 15,
           "tests_passed": 12,
@@ -25,7 +25,7 @@
         },
         "analysis": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:10.099287",
+          "timestamp": "2026-02-19T15:32:10.706654",
           "duration": 0.2,
           "message": "Analysis stage simulated",
           "simulated": true
@@ -33,22 +33,22 @@
       },
       "duration": 1.01,
       "status": "failed",
-      "end_time": "2026-02-19T15:28:10.099287"
+      "end_time": "2026-02-19T15:32:10.706654"
     },
     {
       "iteration": 2,
-      "start_time": "2026-02-19T15:28:10.603500",
+      "start_time": "2026-02-19T15:32:11.215371",
       "mode": "simulation",
       "stages": {
         "build": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:11.107641",
+          "timestamp": "2026-02-19T15:32:11.717527",
           "duration": 0.5,
           "simulated": true
         },
         "test": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:11.410912",
+          "timestamp": "2026-02-19T15:32:12.018978",
           "duration": 0.3,
           "tests_run": 15,
           "tests_passed": 15,
@@ -56,7 +56,7 @@
         },
         "analysis": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:11.614307",
+          "timestamp": "2026-02-19T15:32:12.222481",
           "duration": 0.2,
           "message": "Analysis stage simulated",
           "simulated": true
@@ -64,100 +64,70 @@
       },
       "duration": 1.01,
       "status": "passed",
-      "end_time": "2026-02-19T15:28:11.614307"
+      "end_time": "2026-02-19T15:32:12.223356"
     },
     {
       "iteration": 3,
-      "start_time": "2026-02-19T15:28:12.119359",
+      "start_time": "2026-02-19T15:32:12.730354",
       "mode": "simulation",
       "stages": {
         "build": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:12.623605",
+          "timestamp": "2026-02-19T15:32:13.232656",
           "duration": 0.5,
           "simulated": true
         },
         "test": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:12.926409",
+          "passed": false,
+          "timestamp": "2026-02-19T15:32:13.535022",
           "duration": 0.3,
           "tests_run": 15,
-          "tests_passed": 15,
+          "tests_passed": 12,
           "simulated": true
         },
         "analysis": {
           "passed": true,
-          "timestamp": "2026-02-19T15:28:13.130731",
+          "timestamp": "2026-02-19T15:32:13.737341",
           "duration": 0.2,
           "message": "Analysis stage simulated",
           "simulated": true
         }
       },
       "duration": 1.01,
-      "status": "passed",
-      "end_time": "2026-02-19T15:28:13.130731"
+      "status": "failed",
+      "end_time": "2026-02-19T15:32:13.738474"
     },
     {
       "iteration": 4,
-      "start_time": "2026-02-19T15:28:13.636108",
+      "start_time": "2026-02-19T15:32:14.244669",
       "mode": "simulation",
       "stages": {
         "build": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:14.138134",
+          "passed": false,
+          "timestamp": "2026-02-19T15:32:14.748933",
           "duration": 0.5,
-          "simulated": true
-        },
-        "test": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:14.440971",
-          "duration": 0.3,
-          "tests_run": 15,
-          "tests_passed": 15,
-          "simulated": true
-        },
-        "analysis": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:14.643796",
-          "duration": 0.2,
-          "message": "Analysis stage simulated",
           "simulated": true
         }
       },
-      "duration": 1.01,
-      "status": "passed",
-      "end_time": "2026-02-19T15:28:14.643796"
+      "status": "failed",
+      "duration": 0.5,
+      "end_time": "2026-02-19T15:32:14.748933"
     },
     {
       "iteration": 5,
-      "start_time": "2026-02-19T15:28:15.150563",
+      "start_time": "2026-02-19T15:32:15.251949",
       "mode": "simulation",
       "stages": {
         "build": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:15.652609",
+          "passed": false,
+          "timestamp": "2026-02-19T15:32:15.754991",
           "duration": 0.5,
-          "simulated": true
-        },
-        "test": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:15.954186",
-          "duration": 0.3,
-          "tests_run": 15,
-          "tests_passed": 15,
-          "simulated": true
-        },
-        "analysis": {
-          "passed": true,
-          "timestamp": "2026-02-19T15:28:16.155413",
-          "duration": 0.2,
-          "message": "Analysis stage simulated",
           "simulated": true
         }
       },
-      "duration": 1.0,
-      "status": "passed",
-      "end_time": "2026-02-19T15:28:16.155413"
+      "status": "failed",
+      "duration": 0.5,
+      "end_time": "2026-02-19T15:32:15.757168"
     }
   ]
 }
