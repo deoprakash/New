@@ -27,9 +27,9 @@ logger = logging.getLogger(__name__)
 
 
 class BranchManager:
-    """Manages Git branches with TEAM_LEADER_AI_Fix naming convention"""
+    """Manages Git branches with DEO_PRAKASH_AI_Fix naming convention"""
     
-    BRANCH_PREFIX = "TEAM_LEADER_AI_Fix"
+    BRANCH_PREFIX = "DEO_PRAKASH_AI"
     
     def __init__(self, repo_path=None):
         """

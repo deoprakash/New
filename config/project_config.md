@@ -64,9 +64,9 @@ See `docker-compose.yml` for service configuration
 ## Project Settings
 
 ### Branch Naming Convention
-- Format: `TEAM_LEADER_AI_Fix/<type>/<timestamp>[/issue_<id>][/description]`
+- Format: `DEO_PRAKASH_AI_Fix/<type>/<timestamp>[/issue_<id>][/description]`
 - Types: bug, feature, hotfix, fix
-- Example: `TEAM_LEADER_AI_Fix/bug/20260219_143022/issue_123/login_fix`
+- Example: `DEO_PRAKASH_AI_Fix/bug/20260219_143022/issue_123/login_fix`
 
 ### Commit Message Convention
 - Format: `[<type>] <message>`
